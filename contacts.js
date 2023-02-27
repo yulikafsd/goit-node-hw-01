@@ -9,7 +9,7 @@ async function listContacts() {
   try {
     const data = await fs.readFile(contactsPath);
     const contacts = JSON.parse(data);
-    // console.table(contacts);
+    console.table(contacts);
     return contacts;
   } catch (error) {
     console.error(error);
@@ -19,7 +19,8 @@ async function listContacts() {
 async function getContactById(contactId) {
   const stringifiedId = contactId.toString();
   try {
-    const contacts = await listContacts();
+    const data = await fs.readFile(contactsPath);
+    const contacts = JSON.parse(data);
     const contact = contacts.find((c) => c.id === stringifiedId);
     console.log(contact);
   } catch (error) {
@@ -30,7 +31,8 @@ async function getContactById(contactId) {
 async function removeContact(contactId) {
   const stringifiedId = contactId.toString();
   try {
-    const contacts = await listContacts();
+    const data = await fs.readFile(contactsPath);
+    const contacts = JSON.parse(data);
     const newContacts = contacts.filter((c) => c.id !== stringifiedId);
     await fs.writeFile(contactsPath, JSON.stringify(newContacts), "utf-8");
   } catch (error) {
@@ -47,7 +49,8 @@ async function addContact(name, email, phone) {
     phone,
   };
   try {
-    const contacts = await listContacts();
+    const data = await fs.readFile(contactsPath);
+    const contacts = JSON.parse(data);
     contacts.push(newContact);
     await fs.writeFile(contactsPath, JSON.stringify(contacts), "utf-8");
   } catch (error) {
